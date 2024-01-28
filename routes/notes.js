@@ -5,16 +5,22 @@ require('dotenv').config();
 
 const { MongoClient } = require("mongodb");
 const uri = process.env.MONGO_DB_URI;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 router.get('/', async (req, res,) => {
-    const database = client.db('notes');
-    const notes = database.collection('notes');
+    try {
+        const database = client.db('notes'); 
+        const notes = database.collection('notes');
 
-    const query = { id: 1 };
-    const note = await notes.findOne(query);
-    res.json(note);
-})
+        const query = { id: 1 };
+        const note = await notes.findOne(query);
+        res.json(note);
+    } catch (error) {
+        console.error("Error fetching note:", error);
+        res.status(500).json({ message: "Error fetching note" });
+    }
+});
+
 module.exports = router;
 
 
@@ -52,3 +58,4 @@ module.exports = router;
 
 
 
+ 
