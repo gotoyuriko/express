@@ -1,5 +1,8 @@
+const cors = require('cors');
+require('dotenv').config();
+
 const { MongoClient } = require("mongodb");
-const uri = "mongodb+srv://gotoyuriko95:yuriyuri95@cluster0.3nljfx2.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.MONGO_DB_URI;
 const client = new MongoClient(uri);
 async function run() {
     const database = client.db('notes');
